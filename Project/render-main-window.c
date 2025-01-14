@@ -1,12 +1,11 @@
-#include "Lux-MP3-Player.h"
+#include "header/Lux-MP3-Player.h"
 
-void load_main_textures(); // Deklaration der Funktion
+void load_main_textures();
 
-SDL_Texture *background_Texture =
-    NULL; // Korrekte Deklaration und Initialisierung
+SDL_Texture *background_Texture = NULL;
 
 void render_main() {
-  load_main_textures(); // Aufruf der Funktion
+  load_main_textures();
 
   SDL_Rect background_Rect = {100, 100, 200, 150};
 

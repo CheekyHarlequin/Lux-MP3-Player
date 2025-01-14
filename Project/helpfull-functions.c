@@ -1,4 +1,4 @@
-#include "Lux-MP3-Player.h"
+#include "header/Lux-MP3-Player.h"
 
 /* void drawText(SDL_Renderer *renderer, const int x, const int y,
               const char *text, TTF_Font **font, const SDL_Color *textColor) {
@@ -36,6 +36,7 @@ SDL_Texture *loadTexture(char *path, SDL_Renderer *renderer) {
 }
 // To kill the programm
 void terminate() {
+  // main textureres
   SDL_DestroyTexture(background_Texture);
   // main window
   SDL_DestroyRenderer(main_renderer);
