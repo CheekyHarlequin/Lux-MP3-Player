@@ -1,46 +1,78 @@
-#include "projectlibs.h"
-#include "projvar.h"
+#include "Lux-MP3-Player.h"
+// main-window
+SDL_Renderer *main_renderer;
+SDL_Window *main_window;
 
-SDL_Renderer *mainrenderer;
-SDL_Window *mainwindow;
+// pop-up-window
+SDL_Renderer *popup_renderer;
+SDL_Window *popup_window;
 TTF_Font *defaultFont;
 
-int main(int argc, char **argv) {
+// functions in and for this file
+int initialize_all();
 
-  /*
-   * Initialises the SDL video subsystem (as well as the events subsystem).
-   * Returns 0 on success or a negative error code on failure using
-   * SDL_GetError().
-   */
-  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0) {
-    fprintf(stderr, "SDL failed to initialise: %s\n", SDL_GetError());
-    return 1;
-  }
-
-  /* Creates a SDL window */
-  mainwindow = SDL_CreateWindow(
-      "Lux-MP3-Player",       /* Title of the SDL window */
-      SDL_WINDOWPOS_CENTERED, /* Position x of the window */
-      SDL_WINDOWPOS_CENTERED, /* Position y of the window */
-      800,                    /* Width of the window in pixels */
-      600,                    /* Height of the window in pixels */
-      SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL |
-          SDL_WINDOW_MAXIMIZED); /* Additional flag(s) */
-
-  /* Checks if window has been created; if not, exits program */
-  if (mainwindow == NULL) {
-    fprintf(stderr, "SDL window failed to initialise: %s\n", SDL_GetError());
-    return 1;
-  }
+int main(int argc, char *argv[]) {
+  // Initialisieren von SDL
+  initialize_all();
+  render_main();
 
   /* Pauses all SDL subsystems for a variable amount of milliseconds */
   SDL_Delay(DELAY);
 
   /* Frees memory */
-  SDL_DestroyWindow(mainwindow);
+  SDL_DestroyRenderer(main_renderer);
+  SDL_DestroyWindow(main_window);
+  SDL_Quit();
 
   /* Shuts down all SDL subsystems */
   SDL_Quit();
 
   return 0;
+}
+
+void initializeFonts() {
+  // Initialisieren der Schriftbibliothek
+  if (TTF_Init() == -1) {
+    printf("TTF_Init Error: %s\n", TTF_GetError());
+    return;
+  }
+
+  // Laden der Standardschriftart
+  defaultFont = TTF_OpenFont("fonts/funky.ttf", 24);
+  if (!defaultFont) {
+    printf("Failed to load font: %s\n", TTF_GetError());
+  }
+}
+
+int initialize_all() {
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS) != 0) {
+    printf("SDL_Init Error: %s\n", SDL_GetError());
+    return 1;
+  }
+
+  // Erstellen eines SDL-Fensters
+  main_window =
+      SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_CENTERED,
+                       SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
+  if (main_window == NULL) {
+    printf("SDL_CreateWindow Error: %s\n", SDL_GetError());
+    SDL_Quit();
+    return 1;
+  }
+
+  // Erstellen eines SDL-Renderers
+  main_renderer = SDL_CreateRenderer(
+      main_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  if (main_renderer == NULL) {
+    SDL_DestroyWindow(main_window);
+    printf("SDL_CreateRenderer Error: %s\n", SDL_GetError());
+    SDL_Quit();
+    return 1;
+  }
+  TTF_Init();
+
+  if ((defaultFont = TTF_OpenFont("fonts/funky.ttf", 32)) == NULL) {
+    printf("Font not found");
+    terminate();
+  }
 }

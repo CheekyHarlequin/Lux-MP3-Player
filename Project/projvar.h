@@ -1,7 +1,10 @@
 #ifndef PROJVAR_H
 #define PROJVAR_H
 
-#define WIDTH 800
-#define HEIGHT 600
-#define DELAY 3000
+// global defines
+#define DELAY 1000 // delay in milliseconds
+
+// here are all global variables
+extern const int TARGET_FPS;
+extern const int FRAME_DELAY;
 #endif
