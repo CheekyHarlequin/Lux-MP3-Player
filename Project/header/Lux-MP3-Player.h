@@ -5,5 +5,6 @@
 #include "globalfunctions.h"
 #include "projectlibs.h"
 #include "projvar.h"
+#include "buttons.h"
 
 #endif

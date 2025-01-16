@@ -1,28 +1,37 @@
 #include "header/Lux-MP3-Player.h"
 
-/* void drawText(SDL_Renderer *renderer, const int x, const int y,
-              const char *text, TTF_Font **font, const SDL_Color *textColor) {
-  const SDL_Color defaultColor = {0, 0, 0};
+// Funktion zur Initialisierung eines Knopfes
+Button createButton(int x, int y, int w, int h, SDL_Renderer *renderer,
+                    const char *image_path) {
+  Button button;
+  button.rect.x = x;
+  button.rect.y = y;
+  button.rect.w = w;
+  button.rect.h = h;
 
-  // Draw with the according color
-  SDL_Surface *surface =
-      TTF_RenderText_Solid((font == NULL) ? defaultFont : *font, text,
-                           (textColor == NULL) ? defaultColor : *textColor);
+  SDL_Surface *surface = IMG_Load(image_path);
+  if (!surface) {
+    printf("IMG_Load Error: %s\n", IMG_GetError());
+    button.texture = NULL;
+    return button;
+  }
 
-  // Draw to texture
-  SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-
+  button.texture = SDL_CreateTextureFromSurface(renderer, surface);
   SDL_FreeSurface(surface);
 
-  // Adjust position
-  SDL_Rect textRect;
+  if (!button.texture) {
+    printf("SDL_CreateTextureFromSurface Error: %s\n", SDL_GetError());
+  }
 
-  SDL_QueryTexture(texture, NULL, NULL, &textRect.w, &textRect.h);
+  return button;
+}
 
-  textRect.x = x - textRect.w / 2, textRect.y = y - textRect.h / 2;
+// Funktion zum Rendern eines Knopfes
+void renderButton(Button button, SDL_Renderer *renderer, int window_width,
+                  int window_height) {
 
-  SDL_RenderCopy(renderer, texture, NULL, &textRect);
-} */
+  SDL_RenderCopy(renderer, button.texture, NULL, &button.rect);
+}
 
 SDL_Texture *loadTexture(char *path, SDL_Renderer *renderer) {
   SDL_Surface *surface = IMG_Load(path);
@@ -34,6 +43,15 @@ SDL_Texture *loadTexture(char *path, SDL_Renderer *renderer) {
   SDL_FreeSurface(surface);
   return texPtr;
 }
+
+void updateButtonRect(Button *button, int windowWidth, int windowHeight) {
+  button->rect.x = button->rect.x * windowWidth / 800;
+  button->rect.y = button->rect.y * windowHeight / 600;
+  button->rect.w = button->rect.w * windowWidth / 800;
+  button->rect.h = button->rect.h * windowHeight / 600;
+}
+// for buttons
+
 // To kill the programm
 void terminate() {
   // main textureres

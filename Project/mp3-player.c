@@ -11,11 +11,20 @@ SDL_Window *popup_window;
 TTF_Font *defaultFont;
 
 // Event-manager
-SDL_Event *main_event;
+SDL_Event main_event;
 
+// Other global variables
+bool is_main_closed = false;
+
+bool is_popup_opened = false;
+bool is_popup_closed = false;
+
+int quit = 0;
 // Target-FPS
-const int TARGET_FPS = 60;
+const int TARGET_FPS = 30;
 const int FRAME_DELAY = 1000 / TARGET_FPS;
+
+// Window std size
 
 // functions in and for this file
 int initialize_all();
@@ -26,10 +35,7 @@ int main(int argc, char *argv[]) {
   initialize_all();
   render_main();
 
-  /* Pauses all SDL subsystems for a variable amount of milliseconds */
-  SDL_Delay(DELAY);
-
-  /* Frees memory */
+  // Thread-Funktion für das Event-Handling
 
   /* Shuts down all SDL subsystems */
   terminate();
@@ -45,7 +51,7 @@ int initialize_all() {
 
   // Erstellen eines SDL-Fensters
   main_window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_CENTERED,
-                                 SDL_WINDOWPOS_CENTERED, 800, 600,
+                                 SDL_WINDOWPOS_CENTERED, 1920, 1080,
                                  SDL_WINDOW_SHOWN | SDL_WINDOW_MAXIMIZED |
                                      SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
   if (main_window == NULL) {
@@ -68,5 +74,7 @@ int initialize_all() {
   if ((defaultFont = TTF_OpenFont("fonts/funky.ttf", 32)) == NULL) {
     printf("Font not found");
     terminate();
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
   }
+  render_main();
 }
