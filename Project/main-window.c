@@ -2,25 +2,23 @@
 // global functions for this file alone
 
 int main_window_io() {
-  // Input-Bar ranges (435<--x-->1540) and (790<--y-->960)
-  // 100 button should be in the middle, at 825 for h = 100
-  Button play_button = createButton(600, 825, 150, 100, main_renderer,
-                                    "main-window-textures/play.png", true);
-  /*
-    Button createButton(int x, int y, int w, int h, SDL_Renderer *renderer,
-    const char *image_path, bool shall_display); Button createButton(int x, int
-    y, int w, int h, SDL_Renderer *renderer, const char *image_path, bool
-    shall_display); Button createButton(int x, int y, int w, int h, SDL_Renderer
-    *renderer, const char *image_path, bool shall_display); Button
-    createButton(int x, int y, int w, int h, SDL_Renderer *renderer, const char
-    *image_path, bool shall_display); Button createButton(int x, int y, int w,
-    int h, SDL_Renderer *renderer, const char *image_path, bool shall_display);
-    */
-  render_main();
-  renderButton(&play_button, main_renderer);
-  SDL_RenderPresent(main_renderer);
+  initialize_buttons();
 
-  SDL_Delay(10000);
+  bool quit = false;
+  while (!quit) {
+    while (SDL_PollEvent(&main_event)) {
+      switch (main_event.type) {
+      case SDL_QUIT:
+        terminate();
+        break;
+
+      default:
+        render_main();
+        SDL_RenderPresent(main_renderer);
+        break;
+      }
+    }
+  }
 
   return 1;
 }

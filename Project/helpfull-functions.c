@@ -27,10 +27,9 @@ Button createButton(int x, int y, int w, int h, SDL_Renderer *renderer,
 }
 
 // Funktion zum Rendern eines Knopfes
-void renderButton(Button *play_button, SDL_Renderer *main_renderer) {
-  if (play_button->to_display) {
-    SDL_RenderCopy(main_renderer, play_button->texture, NULL,
-                   &play_button->rect);
+void renderButton(Button *button, SDL_Renderer *main_renderer) {
+  if (button->to_display) {
+    SDL_RenderCopy(main_renderer, button->texture, NULL, &button->rect);
   }
 }
 

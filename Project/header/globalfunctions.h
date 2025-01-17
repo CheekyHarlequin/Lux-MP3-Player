@@ -4,6 +4,8 @@
 
 // from render-main.window.c
 void render_main();
+void initialize_buttons();
+
 int main_window_io();
 
 // from helpfull-functions.c

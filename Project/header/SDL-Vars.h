@@ -14,4 +14,7 @@ extern SDL_Texture *main_UI_Texture;
 // main window rects
 extern SDL_Rect background_Rect;
 extern SDL_Rect main_UI_Rect;
+
+// For Events
+extern SDL_Event main_event;
 #endif
