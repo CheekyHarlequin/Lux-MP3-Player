@@ -4,6 +4,7 @@
 
 // from render-main.window.c
 void render_main();
+int main_window_io();
 
 // from helpfull-functions.c
 /*void drawText();*/

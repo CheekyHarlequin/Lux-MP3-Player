@@ -1,14 +1,14 @@
 #include "header/Lux-MP3-Player.h"
 
-// Funktion zur Initialisierung eines Knopfes
+// to create buttons
 Button createButton(int x, int y, int w, int h, SDL_Renderer *renderer,
-                    const char *image_path) {
+                    const char *image_path, bool shall_display) {
   Button button;
   button.rect.x = x;
   button.rect.y = y;
   button.rect.w = w;
   button.rect.h = h;
-
+  button.to_display = shall_display;
   SDL_Surface *surface = IMG_Load(image_path);
   if (!surface) {
     printf("IMG_Load Error: %s\n", IMG_GetError());
@@ -27,10 +27,11 @@ Button createButton(int x, int y, int w, int h, SDL_Renderer *renderer,
 }
 
 // Funktion zum Rendern eines Knopfes
-void renderButton(Button button, SDL_Renderer *renderer, int window_width,
-                  int window_height) {
-
-  SDL_RenderCopy(renderer, button.texture, NULL, &button.rect);
+void renderButton(Button *play_button, SDL_Renderer *main_renderer) {
+  if (play_button->to_display) {
+    SDL_RenderCopy(main_renderer, play_button->texture, NULL,
+                   &play_button->rect);
+  }
 }
 
 SDL_Texture *loadTexture(char *path, SDL_Renderer *renderer) {
@@ -54,8 +55,9 @@ void updateButtonRect(Button *button, int windowWidth, int windowHeight) {
 
 // To kill the programm
 void terminate() {
-  // main textureres
+  // main textures
   SDL_DestroyTexture(background_Texture);
+  SDL_DestroyTexture(main_UI_Texture);
   // main window
   SDL_DestroyRenderer(main_renderer);
   SDL_DestroyWindow(main_window);

@@ -1,5 +1,14 @@
 #include "header/Lux-MP3-Player.h"
+#include "header/buttons.h"
 
+Button play_button;
+
+/*
+#TODO
+Update textures when resizing window, currently not working, even with given
+functions
+*/
+void render_all_buttons();
 // helpfull render main functions
 void load_main_textures();
 void render_main_textures();
@@ -15,20 +24,18 @@ SDL_Rect background_Rect;
 SDL_Rect main_UI_Rect;
 int window_width_new = 1920;
 int window_height_new = 1080;
+
 void render_main() {
   update_rect_pos(&background_Rect);
   update_rect_pos(&main_UI_Rect);
 
   load_main_textures();
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
-  SDL_RenderClear(main_renderer);
-  while (true) {
-    SDL_GetWindowSize(main_window, &window_width_new, &window_height_new);
-    update_main_rects(window_width_new, window_height_new);
-    render_main_textures();
 
-    SDL_RenderPresent(main_renderer);
-  }
+  SDL_GetWindowSize(main_window, &window_width_new, &window_height_new);
+  update_main_rects(window_width_new, window_height_new);
+  SDL_RenderClear(main_renderer);
+  render_main_textures();
 }
 
 void load_main_textures() {

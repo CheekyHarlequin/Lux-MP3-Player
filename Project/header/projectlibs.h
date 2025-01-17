@@ -7,8 +7,6 @@
 #include <stdio.h>
 #include <string.h>
 
-// for multithreading
-#include <pthread.h>
 
 // SDL-libs
 #include <SDL2/SDL.h>

@@ -24,18 +24,13 @@ int quit = 0;
 const int TARGET_FPS = 30;
 const int FRAME_DELAY = 1000 / TARGET_FPS;
 
-// Window std size
-
 // functions in and for this file
 int initialize_all();
 
 int main(int argc, char *argv[]) {
   // Initialisieren von SDL
-
   initialize_all();
-  render_main();
-
-  // Thread-Funktion für das Event-Handling
+  main_window_io();
 
   /* Shuts down all SDL subsystems */
   terminate();
@@ -74,7 +69,6 @@ int initialize_all() {
   if ((defaultFont = TTF_OpenFont("fonts/funky.ttf", 32)) == NULL) {
     printf("Font not found");
     terminate();
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
   }
-  render_main();
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 }
