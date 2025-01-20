@@ -1,5 +1,7 @@
 #include "header/Lux-MP3-Player.h"
 
+// All button-functions following:
+Button buttons[NUM_OF_BUTTONS];
 // to create buttons
 Button createButton(int x, int y, int w, int h, SDL_Renderer *renderer,
                     const char *image_path, bool shall_display) {
@@ -26,11 +28,24 @@ Button createButton(int x, int y, int w, int h, SDL_Renderer *renderer,
   return button;
 }
 
-// Funktion zum Rendern eines Knopfes
-void renderButton(Button *button, SDL_Renderer *main_renderer) {
-  if (button->to_display) {
-    SDL_RenderCopy(main_renderer, button->texture, NULL, &button->rect);
+int get_pressed_button(int x, int y) {
+  for (int i = 0; i < NUM_OF_BUTTONS; i++) {
+    SDL_Rect *rect = &buttons[i].rect;
+    if (buttons[i].to_display && x >= rect->x && x < (rect->x + rect->w) &&
+        y >= rect->y && y < (rect->y + rect->h)) {
+      return i; // Return the index of the pressed button
+    }
   }
+  return -1; // Return -1 if no button was pressed
+}
+
+// Function to render a button
+
+void updateButtonRect(Button *button, int windowWidth, int windowHeight) {
+  button->rect.x = button->rect.x * windowWidth / 800;
+  button->rect.y = button->rect.y * windowHeight / 600;
+  button->rect.w = button->rect.w * windowWidth / 800;
+  button->rect.h = button->rect.h * windowHeight / 600;
 }
 
 SDL_Texture *loadTexture(char *path, SDL_Renderer *renderer) {
@@ -43,14 +58,6 @@ SDL_Texture *loadTexture(char *path, SDL_Renderer *renderer) {
   SDL_FreeSurface(surface);
   return texPtr;
 }
-
-void updateButtonRect(Button *button, int windowWidth, int windowHeight) {
-  button->rect.x = button->rect.x * windowWidth / 800;
-  button->rect.y = button->rect.y * windowHeight / 600;
-  button->rect.w = button->rect.w * windowWidth / 800;
-  button->rect.h = button->rect.h * windowHeight / 600;
-}
-// for buttons
 
 // To kill the programm
 void terminate() {

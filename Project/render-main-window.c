@@ -15,6 +15,7 @@ void render_main_textures();
 void update_rect_size(SDL_Rect *rect, int window_width, int window_height);
 void update_main_rects(int window_width, int window_height);
 void update_rect_pos(SDL_Rect *rect);
+void renderButtons(SDL_Renderer *main_renderer);
 
 SDL_Texture *background_Texture = NULL;
 SDL_Texture *main_UI_Texture = NULL;
@@ -45,15 +46,8 @@ void render_main() {
   SDL_RenderClear(main_renderer);
 
   render_main_textures();
-  renderButton(&play_button, main_renderer);
-  renderButton(&pause_button, main_renderer);
-  renderButton(&last_button, main_renderer);
-  renderButton(&next_button, main_renderer);
-  renderButton(&replay_off_button, main_renderer);
-  renderButton(&replay_on_button, main_renderer);
-  renderButton(&list_button, main_renderer);
+  renderButtons(main_renderer);
 }
-
 void load_main_textures() {
   background_Texture =
       loadTexture("main-window-textures/background.png", main_renderer);
@@ -81,19 +75,28 @@ void update_rect_pos(SDL_Rect *rect) {
   rect->x = 0;
 }
 
-void initialize_buttons() {
-  play_button = createButton(710, 825, 75, 100, main_renderer,
-                             "main-window-textures/play.png", true);
-  pause_button = createButton(710, 825, 75, 100, main_renderer,
-                              "main-window-textures/pause.png", false);
-  last_button = createButton(610, 825, 75, 100, main_renderer,
-                             "main-window-textures/last-button.png", true);
-  next_button = createButton(810, 825, 75, 100, main_renderer,
-                             "main-window-textures/next-button.png", true);
-  replay_off_button = createButton(1330, 825, 75, 100, main_renderer,
-                                   "main-window-textures/replay-off.png", true);
-  replay_on_button = createButton(1330, 825, 75, 100, main_renderer,
-                                  "main-window-textures/replay-on.png", false);
-  list_button = createButton(510, 825, 75, 100, main_renderer,
-                             "main-window-textures/List.png", true);
+void initialize_buttons(SDL_Renderer *renderer) {
+  buttons[0] = createButton(710, 825, 75, 100, renderer,
+                            "main-window-textures/play.png", true);
+  buttons[1] = createButton(710, 825, 75, 100, renderer,
+                            "main-window-textures/pause.png", false);
+  buttons[2] = createButton(610, 825, 75, 100, renderer,
+                            "main-window-textures/last-button.png", true);
+  buttons[3] = createButton(810, 825, 75, 100, renderer,
+                            "main-window-textures/next-button.png", true);
+  buttons[4] = createButton(1330, 825, 75, 100, renderer,
+                            "main-window-textures/replay-off.png", true);
+  buttons[5] = createButton(1330, 825, 75, 100, renderer,
+                            "main-window-textures/replay-on.png", false);
+  buttons[6] = createButton(510, 825, 75, 100, renderer,
+                            "main-window-textures/List.png", true);
+}
+
+// to render buttons
+void renderButtons(SDL_Renderer *main_renderer) {
+  for (int i = 0; i < NUM_OF_BUTTONS; i++) {
+    if (buttons[i].to_display) {
+      SDL_RenderCopy(main_renderer, buttons[i].texture, NULL, &buttons[i].rect);
+    }
+  }
 }
