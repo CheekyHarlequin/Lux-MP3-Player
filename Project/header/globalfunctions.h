@@ -2,6 +2,9 @@
 #define GLOBALFUNCTIONS_H
 // here are all global functions
 
+
+int initialize_SDL();
+void initialize_all();
 // from render-main.window.c
 void render_main();
 void initialize_buttons();
@@ -11,8 +14,6 @@ void initialize_all_textures();
 //from button-handling.c
 void handle_button_pressed(int pressed_bttn);
 
-//from music-controll.c
-int initialize_music();
 
 int main_window_io();
 

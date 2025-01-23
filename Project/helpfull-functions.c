@@ -59,9 +59,16 @@ SDL_Texture *loadTexture(char *path, SDL_Renderer *renderer) {
   return texPtr;
 }
 
+void initialize_all() {
+  initialize_SDL();
+  initialize_buttons(main_renderer);
+  load_main_textures();
+  initialize_music("music");
+}
 // To kill the programm
 void terminate() {
   // main textures
+  free_music();
   SDL_DestroyTexture(background_Texture);
   SDL_DestroyTexture(main_UI_Texture);
   // main window

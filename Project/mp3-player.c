@@ -25,7 +25,6 @@ const int TARGET_FPS = 30;
 const int FRAME_DELAY = 1000 / TARGET_FPS;
 
 // functions in and for this file
-int initialize_all();
 
 int main(int argc, char *argv[]) {
   // Initialisieren von SDL
@@ -38,7 +37,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-int initialize_all() {
+int initialize_SDL() {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS) != 0) {
     printf("SDL_Init Error: %s\n", SDL_GetError());
     return 1;

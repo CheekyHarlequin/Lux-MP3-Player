@@ -25,15 +25,6 @@ SDL_Rect main_UI_Rect;
 int window_width_new = 1920;
 int window_height_new = 1080;
 
-// define buttons
-Button play_button;
-Button pause_button;
-Button replay_off_button;
-Button replay_on_button;
-Button list_button;
-Button last_button;
-Button next_button;
-
 void render_main() {
   update_rect_pos(&background_Rect);
   update_rect_pos(&main_UI_Rect);

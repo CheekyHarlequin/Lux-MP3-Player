@@ -2,14 +2,6 @@
 // global functions for this file alone
 
 int main_window_io() {
-  initialize_music();
-  if (Mix_PlayMusic(bgm, -1) == -1) {
-    printf("Musik konnte nicht abgespielt werden! SDL_mixer Error: %s\n",
-           Mix_GetError());
-  }
-
-  initialize_buttons(main_renderer);
-  load_main_textures();
   bool quit = false;
   while (!quit) {
     while (SDL_PollEvent(&main_event)) {
