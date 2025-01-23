@@ -13,8 +13,6 @@ int main_window_io() {
         int x, y;
         SDL_GetMouseState(&x, &y);
         int pressed_button = get_pressed_button(x, y);
-        printf("Mouse button pressed at (%d, %d)\n", x, y);
-        printf("Pressed button index: %d\n", pressed_button);
         handle_button_pressed(pressed_button);
       default:
         render_main();

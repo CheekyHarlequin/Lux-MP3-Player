@@ -1,16 +1,5 @@
 #include "header/Lux-MP3-Player.h"
 
-void change_repeat_option(int repeats) {
-  if (Mix_PlayingMusic()) {
-    Mix_HookMusicFinished(
-        NULL);       // Deaktiviere den aktuellen Hook, falls vorhanden
-    Mix_HaltMusic(); // Beende die aktuelle Wiedergabe (ohne Neustart)
-    Mix_PlayMusic(
-        music_array[current_music_index],
-        repeats); // Starte die Musik erneut mit der neuen Wiederholungsoption
-  }
-}
-
 void handle_button_pressed(int pressed_bttn) {
   switch (pressed_bttn) {
 
@@ -63,7 +52,6 @@ void handle_button_pressed(int pressed_bttn) {
                               ? 0
                               : (current_music_index + 1);
     if (buttons[5].to_display) {
-      puts("test");
       repeats_on_off = 1;
       buttons[4].to_display = true;
       buttons[5].to_display = false;
@@ -81,9 +69,12 @@ void handle_button_pressed(int pressed_bttn) {
   case 4: // set replay on
     puts("button 4 (replay-off) pressed");
     repeats_on_off = -1;
-    change_repeat_option(repeats_on_off);
+    play_music(current_music_index, repeats_on_off);
     buttons[4].to_display = false;
     buttons[5].to_display = true;
+
+    buttons[0].to_display = false;
+    buttons[1].to_display = true;
     render_main();
     SDL_RenderPresent(main_renderer);
     SDL_Delay(500);
@@ -92,9 +83,11 @@ void handle_button_pressed(int pressed_bttn) {
   case 5: // set replay off
     puts("button 5 (replay-on) pressed");
     repeats_on_off = 1;
-    change_repeat_option(repeats_on_off);
+    play_music(current_music_index, repeats_on_off);
     buttons[4].to_display = true;
     buttons[5].to_display = false;
+    buttons[0].to_display = false;
+    buttons[1].to_display = true;
     render_main();
     SDL_RenderPresent(main_renderer);
     SDL_Delay(500);
