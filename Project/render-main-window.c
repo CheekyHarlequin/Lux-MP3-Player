@@ -1,13 +1,20 @@
 #include "header/Lux-MP3-Player.h"
 #include "header/buttons.h"
 
-/*
-#TODO
-Update textures when resizing window, currently not working, even with given
-functions
-*/
+// Original screen size
+const int ORIGINAL_WINDOW_WIDTH = 1920;
+const int ORIGINAL_WINDOW_HEIGHT = 1080;
+
+SDL_Rect original_button_rects[NUM_OF_BUTTONS] = {
+    {710, 845, 75, 100}, {710, 845, 75, 100},  {610, 845, 75, 100},
+    {810, 845, 75, 100}, {1330, 845, 75, 100}, {1330, 845, 75, 100},
+    {510, 845, 75, 100}};
+
+bool get_initial_display_state(int index);
 
 void render_all_buttons();
+const char *get_image_path(int index);
+void update_button_rects(int window_width, int window_height);
 // helpfull render main functions
 void load_main_textures();
 void render_main_textures();
@@ -33,11 +40,14 @@ void render_main() {
 
   SDL_GetWindowSize(main_window, &window_width_new, &window_height_new);
   update_main_rects(window_width_new, window_height_new);
+  update_button_rects(window_width_new,
+                      window_height_new); // Knöpfe aktualisieren
   SDL_RenderClear(main_renderer);
 
   render_main_textures();
   renderButtons(main_renderer);
 }
+
 void load_main_textures() {
   background_Texture =
       loadTexture("main-window-textures/background.png", main_renderer);
@@ -66,21 +76,37 @@ void update_rect_pos(SDL_Rect *rect) {
 }
 
 void initialize_buttons(SDL_Renderer *renderer) {
-  buttons[0] = createButton(710, 825, 75, 100, renderer,
-                            "main-window-textures/play.png", true);
-  buttons[1] = createButton(710, 825, 75, 100, renderer,
-                            "main-window-textures/pause.png", false);
-  buttons[2] = createButton(610, 825, 75, 100, renderer,
-                            "main-window-textures/last-button.png", true);
-  buttons[3] = createButton(810, 825, 75, 100, renderer,
-                            "main-window-textures/next-button.png", true);
-  buttons[4] = createButton(1330, 825, 75, 100, renderer,
-                            "main-window-textures/replay-off.png", true);
-  buttons[5] = createButton(1330, 825, 75, 100, renderer,
-                            "main-window-textures/replay-on.png", false);
-  buttons[6] = createButton(510, 825, 75, 100, renderer,
-                            "main-window-textures/List.png", true);
+  for (int i = 0; i < NUM_OF_BUTTONS; i++) {
+    buttons[i] =
+        createButton(original_button_rects[i].x, original_button_rects[i].y,
+                     original_button_rects[i].w, original_button_rects[i].h,
+                     renderer, get_image_path(i), get_initial_display_state(i));
+  }
 }
+
+// Helper functions to get image path and display state
+const char *get_image_path(int index) {
+  switch (index) {
+  case 0:
+    return "main-window-textures/play.png";
+  case 1:
+    return "main-window-textures/pause.png";
+  case 2:
+    return "main-window-textures/last-button.png";
+  case 3:
+    return "main-window-textures/next-button.png";
+  case 4:
+    return "main-window-textures/replay-off.png";
+  case 5:
+    return "main-window-textures/replay-on.png";
+  case 6:
+    return "main-window-textures/List.png";
+  default:
+    return "";
+  }
+}
+
+bool get_initial_display_state(int index) { return (index != 1 && index != 5); }
 
 // to render buttons
 void renderButtons(SDL_Renderer *main_renderer) {
@@ -88,6 +114,18 @@ void renderButtons(SDL_Renderer *main_renderer) {
     if (buttons[i].to_display) {
       SDL_RenderCopy(main_renderer, buttons[i].texture, NULL, &buttons[i].rect);
     }
+  }
+}
+
+void update_button_rects(int window_width, int window_height) {
+  float width_ratio = (float)window_width / (float)ORIGINAL_WINDOW_WIDTH;
+  float height_ratio = (float)window_height / (float)ORIGINAL_WINDOW_HEIGHT;
+
+  for (int i = 0; i < NUM_OF_BUTTONS; i++) {
+    buttons[i].rect.x = original_button_rects[i].x * width_ratio;
+    buttons[i].rect.y = original_button_rects[i].y * height_ratio;
+    buttons[i].rect.w = original_button_rects[i].w * width_ratio;
+    buttons[i].rect.h = original_button_rects[i].h * height_ratio;
   }
 }
 
