@@ -43,6 +43,11 @@ int initialize_all() {
     printf("SDL_Init Error: %s\n", SDL_GetError());
     return 1;
   }
+  if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+    printf("SDL_mixer konnte nicht initialisiert werden! SDL_mixer Error: %s\n",
+           Mix_GetError());
+    return -1;
+  }
 
   // Erstellen eines SDL-Fensters
   main_window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_CENTERED,

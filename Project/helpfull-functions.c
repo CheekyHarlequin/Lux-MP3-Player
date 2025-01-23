@@ -67,7 +67,7 @@ void terminate() {
   // main window
   SDL_DestroyRenderer(main_renderer);
   SDL_DestroyWindow(main_window);
-
+  Mix_Quit();
   SDL_Quit();
   exit(0);
 }

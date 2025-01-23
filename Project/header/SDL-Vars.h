@@ -17,4 +17,6 @@ extern SDL_Rect main_UI_Rect;
 
 // For Events
 extern SDL_Event main_event;
+
+extern Mix_Music *bgm;
 #endif

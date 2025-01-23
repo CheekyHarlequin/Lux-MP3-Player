@@ -38,7 +38,6 @@ void render_main() {
   update_rect_pos(&background_Rect);
   update_rect_pos(&main_UI_Rect);
 
-  load_main_textures();
   SDL_SetRenderDrawColor(main_renderer, 0, 0, 0, 255);
 
   SDL_GetWindowSize(main_window, &window_width_new, &window_height_new);
@@ -99,4 +98,9 @@ void renderButtons(SDL_Renderer *main_renderer) {
       SDL_RenderCopy(main_renderer, buttons[i].texture, NULL, &buttons[i].rect);
     }
   }
+}
+
+void initialize_all_textures() {
+  initialize_buttons(main_renderer);
+  load_main_textures();
 }

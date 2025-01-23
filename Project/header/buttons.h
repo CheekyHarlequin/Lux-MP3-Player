@@ -27,14 +27,5 @@ void renderButtons(SDL_Renderer *main_renderer);
 int get_pressed_button(int x, int y);
 
 
-//All existing buttons
-// #TODO maybe create Array for all buttons
-extern Button play_button;
-extern Button pause_button;
-extern Button replay_off_button;
-extern Button replay_on_button;
-extern Button list_button;
-extern Button last_button;
-extern Button next_button;
 
 #endif
