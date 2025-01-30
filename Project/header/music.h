@@ -11,9 +11,16 @@ void free_music();
 
 
 //music variables
-extern Mix_Music *music_array[MAX_SONGS];
+typedef struct {
+    Mix_Music *music;
+    char title[256]; // Assumption: song-titles are 256 chars long at most
+} Song;
+
+
+extern Song music_array[MAX_SONGS];
 extern int total_songs;
 extern int current_music_index;
 extern int repeats_on_off;
 extern bool has_started_once;
+extern int scroll_offset;
 #endif

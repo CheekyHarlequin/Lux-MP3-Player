@@ -7,5 +7,6 @@
 #include "projvar.h"
 #include "buttons.h"
 #include "music.h"
+#include "list.h"
 
 #endif

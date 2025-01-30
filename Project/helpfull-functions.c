@@ -65,6 +65,36 @@ void initialize_all() {
   load_main_textures();
   initialize_music("music");
 }
+
+SDL_Texture *cropImage(SDL_Renderer *renderer, SDL_Surface *sourceSurface,
+                       SDL_Rect cropRect) {
+  if (sourceSurface == NULL) {
+    printf("Quelloberfläche ist NULL!\n");
+    return NULL;
+  }
+
+  SDL_Surface *croppedSurface = SDL_CreateRGBSurface(
+      0, cropRect.w, cropRect.h, sourceSurface->format->BitsPerPixel,
+      sourceSurface->format->Rmask, sourceSurface->format->Gmask,
+      sourceSurface->format->Bmask, sourceSurface->format->Amask);
+  if (croppedSurface == NULL) {
+    printf("Error for creating cropped surface! SDL_Error: %s\n",
+           SDL_GetError());
+    return NULL;
+  }
+
+  if (SDL_BlitSurface(sourceSurface, &cropRect, croppedSurface, NULL) < 0) {
+    printf("Error for Blitting! SDL_Error: %s\n", SDL_GetError());
+    SDL_FreeSurface(croppedSurface);
+    return NULL;
+  }
+
+  SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, croppedSurface);
+  SDL_FreeSurface(croppedSurface);
+
+  return texture;
+}
+
 // To kill the programm
 void terminate() {
   // main textures
